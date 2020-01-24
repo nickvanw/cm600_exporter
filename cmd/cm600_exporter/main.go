@@ -7,8 +7,9 @@ import (
 	"os"
 
 	"github.com/gorilla/handlers"
-	"github.com/nickvanw/cm600_exporter"
+	cm600exporter "github.com/nickvanw/cm600_exporter"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 var (
@@ -31,7 +32,7 @@ func main() {
 	prometheus.MustRegister(c)
 
 	mux := http.NewServeMux()
-	mux.Handle(*metricsPath, prometheus.Handler())
+	mux.Handle(*metricsPath, promhttp.Handler())
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(`<html>
 			<head><title>Netgear CM600 Exporter</title></head>
